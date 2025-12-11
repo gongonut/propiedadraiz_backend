@@ -1,0 +1,81 @@
+sobre el backend de administración de bots desarrolla una Aplicación de Bienes Raíces
+completa que consista en una aplicación web (frontend), diseñada para la gestión de inmuebles y una aplicación básica que tome la información del posible cliente como se explica más abajo.
+
+Tecnologías Requeridas:
+
+Frontend aplicación básica: Angular 19 y Tailwind CSS para el diseño y la interfaz de usuario.
+
+Backend: el proyecto ya existente sobre Nestjs y mongodb
+
+Funcionalidades del Sistema:
+
+Gestión de Perfiles de Usuario:
+
+Implementa un sistema donde cada usuario pueda crear y editar su perfil personal.
+
+El perfil del usuario debe incluir los siguientes campos de información:
+
+Empresa (Nombre de la empresa a la que pertenece el usuario)
+
+Nombre (Nombre completo del contacto)
+
+Teléfono (Número de teléfono principal)
+
+Número de WhatsApp (Número de teléfono específico para WhatsApp)
+
+Correo Electrónico
+
+Gestión de Inmuebles:
+
+Proporciona una interfaz donde el usuario pueda crear, ver, editar y eliminar una lista de inmuebles.
+
+Para cada inmueble, se debe almacenar y gestionar la siguiente información:
+
+Nombre del Edificio: Campo opcional. Si aplica, el usuario podrá seleccionarlo de una lista predefinida que debe ser editable y expandible (el usuario puede añadir nuevos nombres de edificios).
+
+Geolocalización: Coordenadas de latitud y longitud.
+
+Dirección: Dirección física completa del inmueble.
+
+Ciudad: Selección de una lista predefinida de ciudades.
+
+Departamento/Provincia: Selección de una lista predefinida de departamentos/provincias.
+
+Descripción del Inmueble: Texto detallado que describe la propiedad.
+
+Tipo de Transacción: Un campo con opciones para seleccionar "Venta", "Alquiler" o "Ambos".
+
+Piso: Campo opcional para especificar el número de piso (si aplica).
+
+Área: Superficie del inmueble (e.g., en metros cuadrados o pies cuadrados).
+
+Número de Habitaciones: Cantidad de habitaciones.
+
+Número de Baños: Cantidad de baños.
+Número de Garajes: Campo opcional para especificar cantidad de garajes (si aplica).
+
+Precio: Precio de venta o alquiler del inmueble.
+
+Teléfono de Contacto del Inmueble: Campo opcional si el teléfono de contacto para el inmueble es diferente al del perfil del usuario.
+
+Fotos: Capacidad para subir y asociar hasta 6 fotografías por cada inmueble.
+
+Funcionalidad de Código QR y Seguimiento de Interacciones:
+
+El sistema debe generar un código QR único para cada inmueble listado.
+
+Al escanear el código QR, el posible cliente debe ser dirigido una aplicación básica que recolecta : código del inmueble, número de WhatsApp del cliente, nombre, opcionalmente correo electrónico. 
+
+El backend guarda Los datos básicos del posible cliente (Nombre, número de WhatsApp, Correo Electrónico) y utiliza un bot para regresar al número de whatsapp del posible cliente los datos almacenados sobre el inmueble incluyendo las fotos y un enlace que permita al posible cliente conectar directamente con el whatsapp del usuario responsable
+
+Generación de Avisos Imprimibles:
+
+La aplicación web debe permitir al usuario generar avisos con el texto "SE VENDE" o "SE ALQUILA" y otros datos al que se agrega el código QR .
+
+El texto de estos avisos debe ser completamente editable por el usuario para personalizar el mensaje.
+
+Consideraciones Adicionales:
+
+El diseño de la aplicación web (frontend) debe ser responsive, asegurando una experiencia óptima en dispositivos móviles y de escritorio.
+
+El backend debe usar la base de datos existente e implementar la gestión de eficientemente todos los datos de usuarios, perfiles, inmuebles y el seguimiento de interacciones.

@@ -1,0 +1,37 @@
+2025/11/11-09:09:01.195 5350 Creating DB C:\Users\Juan Carlos\Documents\proyectos\whatsapp-catalogo\backend\.wwebjs_auth\session-session_1762870054130\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb since it was missing.
+2025/11/11-09:09:01.212 5350 Reusing MANIFEST C:\Users\Juan Carlos\Documents\proyectos\whatsapp-catalogo\backend\.wwebjs_auth\session-session_1762870054130\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/11/11-09:09:01.631 20dc Manual compaction at level-0 from '\x00\x03\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x04\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/11/11-09:09:01.634 20dc Manual compaction at level-0 from '\x00\x04\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x05\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/11/11-09:09:01.638 d38 Manual compaction at level-0 from '\x00\x05\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x06\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/11/11-09:09:01.641 20dc Manual compaction at level-0 from '\x00\x02\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x03\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/11/11-09:09:01.644 5350 Manual compaction at level-0 from '\x00\x06\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x07\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/11/11-09:09:01.647 d38 Manual compaction at level-0 from '\x00\x07\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x08\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/11/11-09:09:01.650 d38 Manual compaction at level-0 from '\x00\x08\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x09\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/11/11-09:09:01.654 d38 Manual compaction at level-0 from '\x00\x0c\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x0d\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/11/11-09:09:01.658 5350 Manual compaction at level-0 from '\x00\x0a\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x0b\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/11/11-09:09:01.663 5350 Level-0 table #5: started
+2025/11/11-09:09:01.673 5350 Level-0 table #5: 11766 bytes OK
+2025/11/11-09:09:01.679 5350 Delete type=0 #3
+2025/11/11-09:09:01.680 20dc Manual compaction at level-0 from '\x00\x0b\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x0c\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/11/11-09:09:01.681 20dc Level-0 table #7: started
+2025/11/11-09:09:01.708 20dc Level-0 table #7: 607 bytes OK
+2025/11/11-09:09:01.717 20dc Delete type=0 #4
+2025/11/11-09:09:01.717 20dc Manual compaction at level-0 from '\x00\x09\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x0a\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/11/11-09:09:01.717 20dc Manual compaction at level-1 from '\x00\x09\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x0a\x00\x00\x00' @ 0 : 0; will stop at '\x00\x09\x00\x00\x05' @ 798 : 0
+2025/11/11-09:09:01.717 20dc Compacting 1@1 + 1@2 files
+2025/11/11-09:09:01.725 20dc Generated table #8@1: 235 keys, 5730 bytes
+2025/11/11-09:09:01.725 20dc Compacted 1@1 + 1@2 files => 5730 bytes
+2025/11/11-09:09:01.730 20dc compacted to: files[ 0 0 1 0 0 0 0 ]
+2025/11/11-09:09:01.731 20dc Delete type=2 #7
+2025/11/11-09:09:01.731 20dc Manual compaction at level-1 from '\x00\x09\x00\x00\x05' @ 798 : 0 .. '\x00\x0a\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/11/11-09:09:01.759 20dc Level-0 table #10: started
+2025/11/11-09:09:01.765 20dc Level-0 table #10: 6547 bytes OK
+2025/11/11-09:09:01.771 20dc Delete type=2 #5
+2025/11/11-09:09:01.771 20dc Delete type=0 #6
+2025/11/11-09:09:01.772 20dc Manual compaction at level-0 from '\x00\x11\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x12\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/11/11-09:09:03.828 5350 Compacting 1@1 + 1@2 files
+2025/11/11-09:09:03.834 5350 Generated table #11@1: 305 keys, 6527 bytes
+2025/11/11-09:09:03.834 5350 Compacted 1@1 + 1@2 files => 6527 bytes
+2025/11/11-09:09:03.838 5350 compacted to: files[ 0 0 1 0 0 0 0 ]
+2025/11/11-09:09:03.839 5350 Delete type=2 #8
+2025/11/11-09:09:03.839 5350 Delete type=2 #10
