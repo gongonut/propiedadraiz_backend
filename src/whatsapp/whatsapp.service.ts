@@ -6,7 +6,7 @@ import { join } from 'path';
 
 import { BotsService } from '../bots/bots.service';
 import { BotDocument } from '../bots/schemas/bot.schema';
-import { ConversationService } from '../conversation/conversation.service';
+// import { ConversationService } from '../conversation/conversation.service';
 import { Button, GenericMessage, IWhatsAppProvider, WHATSAPP_PROVIDER } from './providers/whatsapp-provider.interface';
 import { WhatsappGateway } from './whatsapp.gateway';
 
@@ -21,8 +21,8 @@ export class WhatsappService implements OnModuleInit {
     private readonly botsService: BotsService,
     private readonly gateway: WhatsappGateway,
     private readonly moduleRef: ModuleRef,
-    @Inject(forwardRef(() => ConversationService))
-    private readonly conversationService: ConversationService,
+    // @Inject(forwardRef(() => ConversationService))
+    // private readonly conversationService: ConversationService,
   ) {}
 
   async onModuleInit() {
@@ -74,7 +74,8 @@ export class WhatsappService implements OnModuleInit {
     // Registrar el listener de mensajes aquí, fuera de la promesa de conexión.
     // Esto asegura que siempre estemos escuchando mensajes mientras la sesión exista.
     session.events.on('message', (genericMessage: GenericMessage) => {
-      this.conversationService.handleIncomingMessage(genericMessage);
+      // this.conversationService.handleIncomingMessage(genericMessage);
+      this.logger.log(`Incoming message from ${genericMessage.from}: ${genericMessage.text}`);
     });
 
     return new Promise((resolve, reject) => {
@@ -92,7 +93,7 @@ export class WhatsappService implements OnModuleInit {
       // Esto resuelve el error TS2345.
       const qrHandler = (qr: string) => {
         this.logger.log(`QR Code generated for ${bot.sessionId}.`);
-        this.botsService.update(bot.id, { qr, status: 'pairing' }).catch(e => this.logger.error(`Error updating bot on QR: ${e.stack}`));
+        this.botsService.update((bot as any)._id, { qr, status: 'pairing' }).catch(e => this.logger.error(`Error updating bot on QR: ${e.stack}`));
         this.gateway.sendQrCode(bot.sessionId, qr);
         resolve(qr);
       };
@@ -106,13 +107,13 @@ export class WhatsappService implements OnModuleInit {
           // It's safer to use '_serialized' which is the JID (e.g., '1234567890@c.us').
           // The 'user' property also contains the number, but '_serialized' is more standard.
           const phoneNumber = statusEvent.user?._serialized?.split('@')[0] || statusEvent.user?.user;
-          await this.botsService.update(bot.id, { phoneNumber, qr: '', status: 'active' });
+          await this.botsService.update((bot as any)._id, { phoneNumber, qr: '', status: 'active' });
           this.gateway.sendStatus(bot.sessionId, 'active');
           resolve(null);
         } else if (statusEvent.status === 'close') {
           cleanup();
           this.sessions.delete(bot.sessionId);
-          await this.botsService.update(bot.id, { status: 'inactive' });
+          await this.botsService.update((bot as any)._id, { status: 'inactive' });
           this.gateway.sendStatus(bot.sessionId, 'inactive');
 
           const reason = statusEvent.reason as Error;
@@ -154,7 +155,7 @@ export class WhatsappService implements OnModuleInit {
         cleanup();
         this.logger.error(`Failed to initialize bot session ${bot.sessionId}`, error.stack);
         this.sessions.delete(bot.sessionId);
-        this.botsService.update(bot.id, { status: 'error' }).catch(e => this.logger.error(`Error updating bot on init error: ${e.stack}`));
+        this.botsService.update((bot as any)._id, { status: 'error' }).catch(e => this.logger.error(`Error updating bot on init error: ${e.stack}`));
         this.gateway.sendStatus(bot.sessionId, 'error');
         reject(error);
       });
@@ -169,7 +170,7 @@ export class WhatsappService implements OnModuleInit {
    */
   async handleIncomingCloudMessage(sessionId: string, genericMessage: GenericMessage) {
     this.logger.log(`Mensaje entrante para la sesión ${sessionId} (Cloud API): ${genericMessage.text}`);
-    this.conversationService.handleIncomingMessage(genericMessage);
+    // this.conversationService.handleIncomingMessage(genericMessage);
   }
 
   async stopBotSession(sessionId: string): Promise<void> {

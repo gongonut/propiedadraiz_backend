@@ -1,37 +1,39 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { WhatsappModule } from './whatsapp/whatsapp.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { BotsModule } from './bots/bots.module';
-import { SessionsModule } from './sessions/sessions.module';
-import { ScheduleModule } from '@nestjs/schedule';
+import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
+import { UsersModule } from './users/users.module';
+import { PropertiesModule } from './properties/properties.module';
+import { AuthModule } from './auth/auth.module';
+import { LeadsModule } from './leads/leads.module';
+import { BotsModule } from './bots/bots.module';
+import { WhatsappModule } from './whatsapp/whatsapp.module';
+import { UploadsModule } from './uploads/uploads.module';
+
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'apps', 'frontend'),
-      serveRoot: '/',
-    }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'apps', 'webpage-catalog'),
-      serveRoot: '/catalog',
-    }),
-    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGODB_URI'),
       }),
-      inject: [ConfigService],
     }),
-    WhatsappModule,
+    UsersModule,
+    PropertiesModule,
+    AuthModule,
+    UploadsModule,
+    LeadsModule,
     BotsModule,
-    SessionsModule
+    WhatsappModule,
   ],
   controllers: [],
   providers: [],

@@ -26,7 +26,7 @@ export class BotsController {
       console.error(`Failed to start bot session and get QR code: ${error.message}`);
     }
       */
-    return this.botsService.findOne(bot.id);
+    return this.botsService.findOne((bot as any)._id);
   }
 
   @Get()

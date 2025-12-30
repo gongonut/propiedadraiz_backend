@@ -158,8 +158,34 @@ export class WhatsappWebJsProvider implements IWhatsAppProvider {
         }
 
         try {
-            // MessageMedia.fromUrl descarga la imagen de la URL
-            const media = await MessageMedia.fromUrl(imageUrl);
+            let media: MessageMedia;
+            
+            // Verificar si es una URL remota o un path local
+            if (imageUrl.startsWith('http')) {
+                // Es una URL remota
+                media = await MessageMedia.fromUrl(imageUrl);
+            } else {
+                // Asumimos que es un path local relativo a la carpeta public
+                // El path suele venir como /uploads/properties/imagen.jpg
+                // Necesitamos resolverlo al sistema de archivos local
+                const path = require('path');
+                const fs = require('fs');
+                
+                // Construir ruta absoluta: backend/public + imageUrl
+                const publicDir = path.join(process.cwd(), 'public');
+                // Quitamos el slash inicial si existe para evitar problemas con join
+                const relativePath = imageUrl.startsWith('/') ? imageUrl.substring(1) : imageUrl;
+                const absolutePath = path.join(publicDir, relativePath);
+
+                if (fs.existsSync(absolutePath)) {
+                    media = MessageMedia.fromFilePath(absolutePath);
+                } else {
+                    // Fallback: intentar tratarlo como URL si no existe el archivo (por si acaso es un esquema raro)
+                     this.logger.warn(`File not found at ${absolutePath}, attempting to fetch as URL.`);
+                     media = await MessageMedia.fromUrl(imageUrl);
+                }
+            }
+            
             await this.client.sendMessage(to, media, { caption: caption });
         } catch (error) {
             this.logger.error(`Failed to send image message to ${to} for session. Error: ${error.message}`);
