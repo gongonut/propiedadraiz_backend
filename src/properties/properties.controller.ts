@@ -50,7 +50,7 @@ export class PropertiesController {
   @Post()
   @UseGuards(JwtAuthGuard)
   create(@Body() createPropertyDto: CreatePropertyDto, @Req() req) {
-    const userId = req.user.userId;
+    const userId = createPropertyDto.user || req.user.userId;
     return this.propertiesService.create(createPropertyDto, userId);
   }
 

@@ -14,7 +14,7 @@ export class PropertiesService {
   ) {}
 
   async create(createPropertyDto: CreatePropertyDto, userId: string): Promise<Property> {
-    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const code = createPropertyDto.code || Math.random().toString(36).substring(2, 8).toUpperCase();
     const qrUrl = `http://localhost:4200/ver-inmueble/${code}`;
     const qrCodeImage = await qrcode.toDataURL(qrUrl);
 

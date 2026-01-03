@@ -15,6 +15,15 @@ import { GeolocationDto } from './geolocation.dto';
 
 export class CreatePropertyDto {
   @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  readonly code?: string;
+
+  @IsString()
+  @IsOptional()
+  readonly user?: string;
+
+  @IsString()
   @IsOptional()
   readonly nombreEdificio?: string;
 

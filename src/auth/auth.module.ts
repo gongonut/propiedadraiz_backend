@@ -13,7 +13,7 @@ import { JwtStrategy } from './jwt.strategy';
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60m' }, // El token expira en 60 minutos
+      signOptions: { expiresIn: '365d' }, // El token expira en 365 dias
     }),
   ],
   controllers: [AuthController],
