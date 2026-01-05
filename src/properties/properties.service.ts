@@ -1,7 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import * as qrcode from 'qrcode'; // Add this line
+import * as qrcode from 'qrcode';
+import * as fs from 'fs';
+import * as path from 'path';
 
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
@@ -60,15 +62,54 @@ export class PropertiesService {
   }
 
   async remove(id: string) {
-    const result = await this.propertyModel.deleteOne({ _id: id }).exec();
-    if (result.deletedCount === 0) {
+    const property = await this.propertyModel.findById(id).exec();
+    if (!property) {
       throw new NotFoundException(`Propiedad con ID "${id}" no encontrada`);
     }
+
+    // Eliminar fotos asociadas
+    if (property.fotos && property.fotos.length > 0) {
+      property.fotos.forEach(fotoUrl => this.deleteImage(fotoUrl));
+    }
+
+    const result = await this.propertyModel.deleteOne({ _id: id }).exec();
     return { message: `Propiedad con ID "${id}" eliminada correctamente` };
   }
 
   // Método adicional para encontrar propiedades por un usuario específico
   async findPropertiesByUser(userId: string): Promise<Property[]> {
     return this.propertyModel.find({ user: new Types.ObjectId(userId) }).populate('user', '-password').exec();
+  }
+
+  async removePropertiesByUser(userId: string) {
+    const properties = await this.propertyModel.find({ user: new Types.ObjectId(userId) }).exec();
+    
+    // Eliminar fotos de todas las propiedades del usuario
+    for (const property of properties) {
+      if (property.fotos && property.fotos.length > 0) {
+        property.fotos.forEach(fotoUrl => this.deleteImage(fotoUrl));
+      }
+    }
+
+    return this.propertyModel.deleteMany({ user: new Types.ObjectId(userId) }).exec();
+  }
+
+  private deleteImage(url: string) {
+    try {
+      // url format: /uploads/properties/filename.ext
+      // file path: public/uploads/properties/filename.ext
+      // remove leading slash if present
+      const cleanUrl = url.startsWith('/') ? url.substring(1) : url;
+      const filePath = path.join(process.cwd(), 'public', cleanUrl);
+
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        console.log(`Deleted file: ${filePath}`);
+      } else {
+        console.warn(`File not found for deletion: ${filePath}`);
+      }
+    } catch (error) {
+      console.error(`Error deleting file ${url}:`, error);
+    }
   }
 }

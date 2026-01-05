@@ -5,6 +5,12 @@ export type UserDocument = User & Document;
 
 @Schema({ timestamps: true })
 export class User {
+  @Prop({ required: true, enum: ['NATURAL', 'EMPRESA'], default: 'NATURAL' })
+  tipoPersona: string;
+
+  @Prop({ trim: true })
+  nit: string;
+
   @Prop({ trim: true })
   empresa: string;
 

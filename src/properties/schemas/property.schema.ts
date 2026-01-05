@@ -44,6 +44,9 @@ export class Property {
   @Prop({ required: true, enum: ['Venta', 'Alquiler', 'Ambos'] })
   tipoTransaccion: string;
 
+  @Prop({ required: true, enum: ['Disponible', 'Vendido', 'Arrendado', 'Inactivo'], default: 'Disponible' })
+  estado: string;
+
   @Prop()
   piso: number;
 

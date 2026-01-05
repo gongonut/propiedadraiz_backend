@@ -51,6 +51,10 @@ export class CreatePropertyDto {
   @IsEnum(['Venta', 'Alquiler', 'Ambos'])
   readonly tipoTransaccion: 'Venta' | 'Alquiler' | 'Ambos';
 
+  @IsEnum(['Disponible', 'Vendido', 'Arrendado', 'Inactivo'])
+  @IsOptional()
+  readonly estado?: 'Disponible' | 'Vendido' | 'Arrendado' | 'Inactivo';
+
   @IsNumber()
   @IsOptional()
   readonly piso?: number;

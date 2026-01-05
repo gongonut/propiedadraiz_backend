@@ -4,9 +4,18 @@ import {
   IsOptional,
   IsString,
   MinLength,
+  IsEnum,
 } from 'class-validator';
 
 export class CreateUserDto {
+  @IsEnum(['NATURAL', 'EMPRESA'])
+  @IsOptional()
+  readonly tipoPersona?: 'NATURAL' | 'EMPRESA';
+
+  @IsString()
+  @IsOptional()
+  readonly nit?: string;
+
   @IsString()
   @IsOptional()
   readonly empresa?: string;
