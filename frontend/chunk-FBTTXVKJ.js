@@ -1,0 +1,1 @@
+var t={DEV_STATUS:!0,get apiUrl(){return this.DEV_STATUS?"http://localhost:3000/api":`https://${window.location.hostname}/api`},VERSION:"1.0.0",ENCRYPTION_KEY:"PropiedadRaiz_Secret_Key_2026"};export{t as a};

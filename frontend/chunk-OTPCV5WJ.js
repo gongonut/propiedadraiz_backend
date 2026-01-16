@@ -1,0 +1,1 @@
+import{a as t}from"./chunk-3EOSINCX.js";import{fb as i}from"./chunk-O5M3UDUQ.js";var n=class e{transform(r){return r?r.startsWith("/")?`${t.imageBaseUrl}${r}`:r:"/assets/no_image.png"}static \u0275fac=function(s){return new(s||e)};static \u0275pipe=i({name:"imageUrl",type:e,pure:!0})};export{n as a};

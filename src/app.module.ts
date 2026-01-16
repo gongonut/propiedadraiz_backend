@@ -18,9 +18,22 @@ import { UploadsModule } from './uploads/uploads.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
-    }),
+    ServeStaticModule.forRoot(
+      // 1. Archivos Públicos del Backend (Uploads, Imágenes, etc.)
+      // Se sirven primero para asegurar que rutas como /uploads/xyz.jpg funcionen directamente.
+      {
+        rootPath: join(__dirname, '..', 'public'),
+        serveRoot: '/', // Opcional: usar '/public' si se quiere prefijo, pero '/' mantiene compatibilidad.
+      },
+      // 2. Frontend Angular (SPA)
+      // Debe ir al final o después de rutas específicas para actuar como fallback a index.html.
+      {
+        rootPath: join(__dirname, '..', 'frontend'),
+        exclude: ['/api/(.*)'], // No interceptar rutas de la API
+      },
+      // 3. Futuras páginas estáticas pueden agregarse aquí como objetos adicionales.
+      // Ejemplo: { rootPath: join(__dirname, '..', 'landing'), serveRoot: '/landing' }
+    ),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
