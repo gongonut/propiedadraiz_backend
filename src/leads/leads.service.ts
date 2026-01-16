@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, Inject, forwardRef } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Lead, LeadDocument } from './schemas/lead.schema';
@@ -13,8 +13,11 @@ export class LeadsService {
 
   constructor(
     @InjectModel(Lead.name) private leadModel: Model<LeadDocument>,
+    @Inject(forwardRef(() => PropertiesService))
     private readonly propertiesService: PropertiesService,
+    @Inject(forwardRef(() => WhatsappService))
     private readonly whatsappService: WhatsappService,
+    @Inject(forwardRef(() => BotsService))
     private readonly botsService: BotsService,
   ) {}
 

@@ -7,10 +7,11 @@ import { WhatsappWebJsProvider } from './providers/whatsapp-web-js.provider';
 import { WhatsappCloudProvider } from './providers/whatsapp-cloud.provider';
 import { WhatsappGateway } from './whatsapp.gateway';
 import { BotsModule } from '../bots/bots.module';
+import { ConversationModule } from '../conversation/conversation.module';
 import { WhatsappWebhookController } from './whatsapp.controller';
 
 @Module({
-  imports: [ConfigModule, forwardRef(() => BotsModule)],
+  imports: [ConfigModule, forwardRef(() => BotsModule), forwardRef(() => ConversationModule)],
   controllers: [
     // Este controlador es solo para la integración con WhatsApp Cloud API.
     // No será utilizado en la implementación inicial con whatsapp-web.js.

@@ -5,7 +5,7 @@ export type LeadDocument = Lead & Document;
 
 @Schema({ timestamps: true })
 export class Lead {
-  @Prop({ required: true })
+  @Prop({ required: false, default: 'Usuario WhatsApp' })
   name: string;
 
   @Prop({ required: true })

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LeadsService } from './leads.service';
 import { LeadsController } from './leads.controller';
@@ -10,11 +10,12 @@ import { BotsModule } from '../bots/bots.module';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Lead.name, schema: LeadSchema }]),
-    PropertiesModule,
-    WhatsappModule,
-    BotsModule
+    forwardRef(() => PropertiesModule),
+    forwardRef(() => WhatsappModule),
+    forwardRef(() => BotsModule)
   ],
   controllers: [LeadsController],
   providers: [LeadsService],
+  exports: [LeadsService],
 })
 export class LeadsModule {}

@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { LeadsModule } from './leads/leads.module';
 import { BotsModule } from './bots/bots.module';
 import { WhatsappModule } from './whatsapp/whatsapp.module';
+import { ConversationModule } from './conversation/conversation.module';
 import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
@@ -34,6 +35,7 @@ import { UploadsModule } from './uploads/uploads.module';
     LeadsModule,
     BotsModule,
     WhatsappModule,
+    ConversationModule,
   ],
   controllers: [],
   providers: [],

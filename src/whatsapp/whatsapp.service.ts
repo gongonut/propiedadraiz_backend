@@ -6,7 +6,7 @@ import { join } from 'path';
 
 import { BotsService } from '../bots/bots.service';
 import { BotDocument } from '../bots/schemas/bot.schema';
-// import { ConversationService } from '../conversation/conversation.service';
+import { ConversationService } from '../conversation/conversation.service';
 import { Button, GenericMessage, IWhatsAppProvider, WHATSAPP_PROVIDER } from './providers/whatsapp-provider.interface';
 import { WhatsappGateway } from './whatsapp.gateway';
 
@@ -21,8 +21,8 @@ export class WhatsappService implements OnModuleInit {
     private readonly botsService: BotsService,
     private readonly gateway: WhatsappGateway,
     private readonly moduleRef: ModuleRef,
-    // @Inject(forwardRef(() => ConversationService))
-    // private readonly conversationService: ConversationService,
+    @Inject(forwardRef(() => ConversationService))
+    private readonly conversationService: ConversationService,
   ) {}
 
   async onModuleInit() {
@@ -74,7 +74,7 @@ export class WhatsappService implements OnModuleInit {
     // Registrar el listener de mensajes aquí, fuera de la promesa de conexión.
     // Esto asegura que siempre estemos escuchando mensajes mientras la sesión exista.
     session.events.on('message', (genericMessage: GenericMessage) => {
-      // this.conversationService.handleIncomingMessage(genericMessage);
+      this.conversationService.handleIncomingMessage(genericMessage);
       this.logger.log(`Incoming message from ${genericMessage.from}: ${genericMessage.text}`);
     });
 
@@ -170,7 +170,7 @@ export class WhatsappService implements OnModuleInit {
    */
   async handleIncomingCloudMessage(sessionId: string, genericMessage: GenericMessage) {
     this.logger.log(`Mensaje entrante para la sesión ${sessionId} (Cloud API): ${genericMessage.text}`);
-    // this.conversationService.handleIncomingMessage(genericMessage);
+    this.conversationService.handleIncomingMessage(genericMessage);
   }
 
   async stopBotSession(sessionId: string): Promise<void> {

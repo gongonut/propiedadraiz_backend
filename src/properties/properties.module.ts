@@ -3,10 +3,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PropertiesService } from './properties.service';
 import { PropertiesController } from './properties.controller';
 import { Property, PropertySchema } from './schemas/property.schema';
+import { BotsModule } from '../bots/bots.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Property.name, schema: PropertySchema }]),
+    BotsModule,
   ],
   controllers: [PropertiesController],
   providers: [PropertiesService],

@@ -1,10 +1,27 @@
-import { Controller, Get, Post, Body, Param, Delete, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param, Delete, Patch } from '@nestjs/common';
 import { BotsService } from './bots.service';
 import { Bot, BotDocument } from './schemas/bot.schema';
 import { WhatsappService } from '../whatsapp/whatsapp.service';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 class CreateBotDto {
+  @IsString()
+  @IsNotEmpty()
   name: string;
+
+  @IsOptional()
+  @IsString()
+  empresaId?: string;
+}
+
+class UpdateBotDto {
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
   empresaId?: string;
 }
 
@@ -17,16 +34,15 @@ export class BotsController {
 
   @Post()
   async create(@Body() createBotDto: CreateBotDto): Promise<BotDocument> {
-    const bot = await this.botsService.create(createBotDto.name, createBotDto.empresaId);
-    /*
-    try {
-      await this.whatsappService.startBotSession(bot);
-    } catch (error) {
-      // Log the error, but don't block the response
-      console.error(`Failed to start bot session and get QR code: ${error.message}`);
-    }
-      */
-    return this.botsService.findOne((bot as any)._id);
+    const empresaId = createBotDto.empresaId ? createBotDto.empresaId : undefined;
+    const bot = await this.botsService.create(createBotDto.name, empresaId);
+    
+    // Attempt to start the bot session asynchronously so it doesn't block the creation response
+    this.whatsappService.startBotSession(bot).catch(error => {
+      console.error(`Failed to start bot session for ${bot.name}: ${error.message}`);
+    });
+
+    return bot;
   }
 
   @Get()
@@ -37,6 +53,19 @@ export class BotsController {
   @Get(':id')
   findOne(@Param('id') id: string): Promise<BotDocument> {
     return this.botsService.findOne(id);
+  }
+
+  @Put(':id')
+  async update(@Param('id') id: string, @Body() updateBotDto: UpdateBotDto): Promise<BotDocument> {
+    const updates: any = { ...updateBotDto };
+    if (updates.empresaId === '') {
+      updates.empresa = undefined; // Unset or set to undefined
+      delete updates.empresaId;
+    } else if (updates.empresaId) {
+      updates.empresa = updates.empresaId;
+      delete updates.empresaId;
+    }
+    return this.botsService.update(id, updates);
   }
 
   @Delete(':id')

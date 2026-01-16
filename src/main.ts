@@ -15,6 +15,9 @@ async function bootstrap() {
     transform: true, // Transforma los payloads a instancias de los DTOs
   }));
 
+  // Configura el prefijo global 'api' para todas las rutas
+  app.setGlobalPrefix('api');
+
   await app.listen(3000);
 }
 bootstrap();

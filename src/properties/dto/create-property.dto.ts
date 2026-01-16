@@ -84,10 +84,10 @@ export class CreatePropertyDto {
   readonly telefonoContacto?: string;
 
   // Las URLs de las fotos se añadirán en el servicio después de subirlas.
-  // Este campo puede ser usado si las URLs ya existen.
+  // Se usa IsString en lugar de IsUrl para permitir rutas relativas internas (/uploads/...)
   @IsArray()
   @ArrayMaxSize(6)
-  @IsUrl({}, { each: true })
+  @IsString({ each: true })
   @IsOptional()
   readonly fotos?: string[];
 }

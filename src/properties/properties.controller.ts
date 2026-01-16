@@ -10,7 +10,9 @@ import {
   Req,
   UseInterceptors,
   UploadedFiles,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -52,6 +54,18 @@ export class PropertiesController {
   create(@Body() createPropertyDto: CreatePropertyDto, @Req() req) {
     const userId = createPropertyDto.user || req.user.userId;
     return this.propertiesService.create(createPropertyDto, userId);
+  }
+
+  @Get('redirect-wa/:code')
+  async redirectWhatsapp(@Param('code') code: string, @Res() res: Response) {
+    try {
+      const url = await this.propertiesService.getWhatsAppRedirectUrl(code);
+      return res.redirect(url);
+    } catch (error) {
+      // Si falla (ej: no hay bot), redirigir al frontend con error o al detalle
+      // Por simplicidad, redirigimos a una página de error genérica o volvemos a localhost:4200
+      return res.redirect(`http://localhost:4200/ver-inmueble/${code}?error=whatsapp_unavailable`);
+    }
   }
 
   @Get()

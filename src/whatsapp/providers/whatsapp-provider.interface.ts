@@ -8,6 +8,7 @@ export interface User {
 // Definición del mensaje genérico para desacoplar el servicio de la librería
 export interface GenericMessage {
   from: string;
+  name?: string;
   text: string;
   isFromMe: boolean;
   originalMessage: unknown; // Para mantener el mensaje original por si se necesita

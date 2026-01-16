@@ -1,10 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { ConfigService } from '@nestjs/config';
 import { Model, Types } from 'mongoose';
 import * as qrcode from 'qrcode';
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { BotsService } from '../bots/bots.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { Property, PropertyDocument } from './schemas/property.schema';
@@ -13,11 +15,18 @@ import { Property, PropertyDocument } from './schemas/property.schema';
 export class PropertiesService {
   constructor(
     @InjectModel(Property.name) private propertyModel: Model<PropertyDocument>,
+    private readonly botsService: BotsService,
+    private readonly configService: ConfigService,
   ) {}
 
   async create(createPropertyDto: CreatePropertyDto, userId: string): Promise<Property> {
     const code = createPropertyDto.code || Math.random().toString(36).substring(2, 8).toUpperCase();
-    const qrUrl = `http://localhost:4200/ver-inmueble/${code}`;
+    
+    // Generar QR que apunta al endpoint de redirección del backend
+    // Usamos la variable de entorno BACKEND_URL o default a localhost:3000
+    const backendUrl = this.configService.get<string>('BACKEND_URL') || 'http://localhost:3000';
+    const qrUrl = `${backendUrl}/properties/redirect-wa/${code}`;
+    
     const qrCodeImage = await qrcode.toDataURL(qrUrl);
 
     const createdProperty = new this.propertyModel({
@@ -27,6 +36,34 @@ export class PropertiesService {
       user: userId, // Asociar la propiedad con el usuario
     });
     return createdProperty.save();
+  }
+
+  async getWhatsAppRedirectUrl(code: string): Promise<string> {
+    // 1. Verificar que la propiedad existe
+    const property = await this.findByCode(code);
+    
+    // 2. Buscar un bot activo
+    const activeBots = await this.botsService.findAllActive();
+    if (!activeBots || activeBots.length === 0) {
+      // Si no hay bot, redirigir a una página de error o al detalle web normal
+      // Por ahora, lanzamos excepción o retornamos null
+      throw new NotFoundException('No hay bots de WhatsApp activos en este momento.');
+    }
+    
+    // Usar el primer bot activo
+    const bot = activeBots[0];
+    const botPhone = bot.phoneNumber; // El número del bot (ej: 57300...)
+
+    if (!botPhone) {
+        throw new NotFoundException('El bot activo no tiene un número de teléfono configurado.');
+    }
+
+    // 3. Construir URL de WhatsApp
+    // https://wa.me/<NUMBER>?text=<MESSAGE>
+    const text = `Hola, me interesa el inmueble ${code}`;
+    const encodedText = encodeURIComponent(text);
+    
+    return `https://wa.me/${botPhone}?text=${encodedText}`;
   }
 
   async findAll(): Promise<Property[]> {

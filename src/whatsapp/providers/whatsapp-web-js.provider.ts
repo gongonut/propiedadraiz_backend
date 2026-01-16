@@ -78,8 +78,17 @@ export class WhatsappWebJsProvider implements IWhatsAppProvider {
             // Filtrar mensajes enviados por el propio bot para evitar bucles de conversación.
             if (message.fromMe) return;
 
+            let name = 'Usuario WhatsApp';
+            try {
+                const contact = await message.getContact();
+                name = contact.pushname || contact.name || contact.number || 'Usuario WhatsApp';
+            } catch (error) {
+                this.logger.warn(`Could not fetch contact info for ${message.from}: ${error.message}`);
+            }
+
             const genericMessage: GenericMessage = {
                 from: message.from,
+                name: name,
                 text: message.body,
                 isFromMe: message.fromMe,
                 originalMessage: message, // Puedes pasar el objeto de mensaje original si necesitas más detalles
